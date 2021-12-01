@@ -86,7 +86,7 @@ public class EclipseAetherFilterTransformerTest
     @Test
     public void testTransformOrFilter()
     {
-        OrFilter filter = new OrFilter( Arrays.<TransformableFilter>asList( ScopeFilter.including( "compile" ), 
+        OrFilter filter = new OrFilter( Arrays.asList( ScopeFilter.including( "compile" ),
                                                                             ScopeFilter.including( "test" ) ) );
 
         OrDependencyFilter dependencyFilter = (OrDependencyFilter) filter.transform( transformer );

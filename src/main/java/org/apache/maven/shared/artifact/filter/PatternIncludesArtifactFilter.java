@@ -117,12 +117,7 @@ public class PatternIncludesArtifactFilter
                     {
                         simplePat = new HashMap<>();
                     }
-                    Map<String, Pattern> peqm = simplePat.get( nb );
-                    if ( peqm == null )
-                    {
-                        peqm = new HashMap<>();
-                        simplePat.put( nb, peqm );
-                    }
+                    Map<String, Pattern> peqm = simplePat.computeIfAbsent( nb, k -> new HashMap<>() );
                     peqm.put( peq, p );
                     it.remove();
                 }

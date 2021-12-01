@@ -232,7 +232,7 @@ public class ScopeArtifactFilter
 
             if ( report )
             {
-                logger.debug( "The following scope filters were not used: " + buffer.toString() );
+                logger.debug( "The following scope filters were not used: " + buffer );
             }
         }
     }

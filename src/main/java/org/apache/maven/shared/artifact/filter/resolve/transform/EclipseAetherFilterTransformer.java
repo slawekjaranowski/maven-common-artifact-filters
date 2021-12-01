@@ -35,7 +35,6 @@ import org.apache.maven.shared.artifact.filter.resolve.PatternInclusionsFilter;
 import org.apache.maven.shared.artifact.filter.resolve.ScopeFilter;
 import org.apache.maven.shared.artifact.filter.resolve.TransformableFilter;
 import org.eclipse.aether.graph.DependencyFilter;
-import org.eclipse.aether.graph.DependencyNode;
 import org.eclipse.aether.util.filter.AndDependencyFilter;
 import org.eclipse.aether.util.filter.ExclusionsDependencyFilter;
 import org.eclipse.aether.util.filter.OrDependencyFilter;
@@ -126,14 +125,7 @@ public class EclipseAetherFilterTransformer
     @Override
     public DependencyFilter transform( final AbstractFilter filter )
     {
-        return new DependencyFilter()
-        {
-            @Override
-            public boolean accept( DependencyNode node, List<DependencyNode> parents )
-            {
-                return filter.accept( new EclipseAetherNode( node ), null );
-            }
-        }; 
+        return ( node, parents ) -> filter.accept( new EclipseAetherNode( node ), null );
     }
 
     private DependencyFilter newAdvancedPatternInclusionFilter( Collection<String> includes )
@@ -151,21 +143,17 @@ public class EclipseAetherFilterTransformer
 
                 final String classifier = matcher.group( 2 );
                 
-                DependencyFilter classifierFilter = new DependencyFilter()
+                DependencyFilter classifierFilter = ( node, parents ) ->
                 {
-                    @Override
-                    public boolean accept( DependencyNode node, List<DependencyNode> parents )
+                    String nodeClassifier = node.getArtifact().getClassifier();
+
+                    if ( nodeClassifier == null )
                     {
-                        String nodeClassifier = node.getArtifact().getClassifier();
-                        
-                        if ( nodeClassifier == null )
-                        {
-                            return false;
-                        }
-                        else 
-                        {
-                            return "*".equals( classifier ) || nodeClassifier.matches( classifier );
-                        }
+                        return false;
+                    }
+                    else
+                    {
+                        return "*".equals( classifier ) || nodeClassifier.matches( classifier );
                     }
                 };
 

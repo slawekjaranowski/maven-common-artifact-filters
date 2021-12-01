@@ -96,7 +96,7 @@ public class ArtifactIncludeFilterTransformerTest
         throws Exception
     {
         OrFilter filter =
-            new OrFilter( Arrays.<TransformableFilter>asList( ScopeFilter.including( "compile" ),
+            new OrFilter( Arrays.asList( ScopeFilter.including( "compile" ),
                                                               ScopeFilter.including( "test" ) ) );
 
         ArtifactFilter dependencyFilter = filter.transform( transformer );
